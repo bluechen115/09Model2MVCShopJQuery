@@ -8,7 +8,7 @@
 
 <head>
 	<meta charset="EUC-KR">
-	<title>회원 목록 조회</title>
+	<title class="pageTitle">회원 목록 조회</title>
 	
 	<link rel="stylesheet" href="/css/admin.css" type="text/css">
 	
@@ -74,7 +74,7 @@
 <!-- ////////////////// jQuery Event 처리로 변경됨 /////////////////////////
 <form name="detailForm" action="/listUser.do" method="post">
 ////////////////////////////////////////////////////////////////////////////////////////////////// -->
-<form name="detailForm">
+<form name="detailForm" class="listForm">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>

@@ -12,13 +12,14 @@
 <head>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 
 <title>상품상세조회</title>
 </head>
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post">
+<form id="detailForm" >
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -36,6 +37,8 @@
 		</td>
 	</tr>
 </table>
+
+<input type="hidden" id="boardNo" name="boardNo" value="${productBoard.boardNo}"/>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 13px;">
 	<tr>
@@ -142,16 +145,17 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 					
 			<c:choose>
-				<c:when test="${productBoard.boardNo == discount.discountBoard || purchaseCount % 4 == 0}">
-					<c:if test="${user.userId != 'admin'}">
+				<c:when test="${productBoard.boardNo == discount.discountBoard}">
 						<td class="ct_write01"><strike>${product.price}</strike>
 						&nbsp;&nbsp;
 						${product.resultPrice}
 						</td>
-					</c:if>
-					<c:if test="${user.userId eq 'admin' }">
-						<td class="ct_write01">${product.resultPrice}</td>
-					</c:if>
+				</c:when>
+				<c:when test="${purchaseCount % 4 == 0 && user.userId != 'admin' }">
+						<td class="ct_write01"><strike>${product.price}</strike>
+						&nbsp;&nbsp;
+						${product.resultPrice}
+						</td>
 				</c:when>
 				<c:otherwise>
 					<td class="ct_write01">${product.resultPrice}</td>
@@ -187,8 +191,9 @@
 					<td width="17" height="23">
 						<img src="/images/ct_btnbg01.gif" width="17" height="23">
 						</td>
-						<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-						<a href="/purchase/addPurchaseView?boardNo=${productBoard.boardNo}">구매</a>
+						<td background="/images/ct_btnbg02.gif" class="purchaseBtn" style="padding-top: 3px;">
+						<%-- <a href="/purchase/addPurchaseView?boardNo=${productBoard.boardNo}">구매</a> --%>
+						구매
 						</td>
 						<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -202,7 +207,8 @@
 					<img src="/images/ct_btnbg01.gif" width="17" height="23">
 				</td>
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-					<a href="javascript:history.go(-1)">이전</a>
+					<!-- <a href="javascript:history.go(-1)">이전</a> -->
+					이전
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -217,4 +223,19 @@
 </form>
 
 </body>
+
+<script type="text/javascript">
+	$('.purchaseBtn').on('click',function(){
+		/* var href = "/purchase/addPurchaseView?boardNo=${productBoard.boardNo}";
+		self.location = href; */
+
+		$('#detailForm').attr("method","post").attr("action","/purchase/addPurchaseView").submit();
+	});
+	
+	$('.ct_btn01').on('click',function(){
+		history.go(-1);
+	});
+</script>
+
+
 </html>

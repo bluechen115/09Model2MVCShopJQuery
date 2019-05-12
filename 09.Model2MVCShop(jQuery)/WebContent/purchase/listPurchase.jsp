@@ -5,7 +5,7 @@
 
 <html>
 <head>
-<title>구매 목록조회</title>
+<title class="pageTitle">구매 목록조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
@@ -19,6 +19,8 @@
 		document.getElementById("currentPage").value = currentPage;
 		document.detailForm.submit();
 	}
+	
+
 </script>
 </head>
 
@@ -26,7 +28,7 @@
 
 	<div style="width: 98%; margin-left: 10px;">
 
-		<form name="detailForm" action="/purchase/listPurchase" method="post">
+		<form name="detailForm" class="listForm" action="/purchase/listPurchase" method="post">
 
 			<table width="100%" height="37" border="0" cellpadding="0"
 				cellspacing="0">
@@ -52,6 +54,7 @@
 					<td colspan="11">전체 ${resultPage.totalCount} 건수, 현재
 						${resultPage.currentPage} 페이지</td>
 				</tr>
+				<tr></tr>
 				<tr>
 					<td class="ct_list_b" width="100">No</td>
 					<td class="ct_line02"></td>
@@ -138,7 +141,7 @@
 				style="margin-top: 10px;">
 				<tr>
 					<td align="center">
-					<input type="hidden" id="currentPage" name="currentPage" value="" /> 
+					<input type="hidden" id="currentPage" name="currentPage" value="${search.currentPage}"/>
 						<jsp:include page="../common/pageNavigator.jsp" /></td>
 				</tr>
 			</table>

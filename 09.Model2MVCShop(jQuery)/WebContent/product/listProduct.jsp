@@ -8,7 +8,7 @@
 
 <html>
 <head>
-<title>상품 목록조회</title>
+<title class="pageTitle">상품 목록조회</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
@@ -44,7 +44,7 @@ $(function(){
 	});
 });
 
- $(function(){
+ /* $(function(){
 	$("td:contains('${productBoard.title}')").on('click',function(){
 		var href = "/product/getProduct?boardNo="+$("#prodTrTd").val().trim()
 		if(${param.menu=='search'}){
@@ -56,7 +56,52 @@ $(function(){
 		self.location = href;
 		
 	});
-}); 
+});  */
+$(function(){
+	$('.boardTitle').on('click',function(){
+		//alert("클릭됨");
+		var no = $(this).parent().children('.boardNo').text();
+		var href = "/product/getProduct?boardNo="+no;
+		if(${param.menu=='search'}){
+			href = href + "&menu=search";
+		}
+		else if(${param.menu=='manage'}){
+			href = href + "&menu=manage";
+		}
+		self.location = href;
+	});
+});
+
+$(function(){
+	$('td:contains("최근등록순")').on('click',function(){
+		fncSortingList('1');
+	});
+	
+	$('td:contains("가격높은순")').on('click',function(){
+		fncSortingList('2');
+	});
+	
+	$('td:contains("가격낮은순")').on('click',function(){
+		fncSortingList('3');
+	});
+});
+
+$(function(){
+	$('.ct_btn01:contains("검색")').on('click',function(){
+		$('form').attr("method","post").attr("action","/product/listProduct").submit();
+	});
+})
+
+$(function() {
+	$('.pageSelector').on('change',function(){
+		$('.ct_btn01:contains("검색")').trigger('click');
+	});
+});
+
+/* $(function(){
+	$('.ct_list_pop:nth-child(4n+6)').css('background-color','whitesmoke');
+}); */
+
 
 
 </script>
@@ -67,7 +112,7 @@ $(function(){
 
 <div style="width:98%; margin-left:10px;">
 
-<form name="detailForm" >
+<form name="detailForm" class="listForm">
 
 <input type="hidden" id="HddnDiscountBoardNo" name="HddnDiscountBoardNo" value="${discount.discountBoard}"/>
 
@@ -99,7 +144,8 @@ $(function(){
 
 
 <input type='hidden' id="orderType" name='orderType' value="${search.orderType}"/>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
+<div style="float:right; width:750px;">
+<table border="0" cellspacing="0" cellpadding="0" style=" margin-top:10px;">
 	<tr>
 		<td>
 			<%-- <a href="/product/getProduct?boardNo=
@@ -113,16 +159,21 @@ $(function(){
 				</c:if>">할인상품보기</a> --%>
 				할인상품보기
 		</td>
-		<td align="right">
-		<select name="pageSize">
-			<option value="${resultPage.pageSize}" >선택</option>
+		<td>
+		<select name="pageSize" class="pageSelector">
+			<%-- <option value="${resultPage.pageSize}" >선택</option> --%>
 			<c:forEach var="i" begin="1" end="10">
 			<option value="${i}" ${i==resultPage.pageSize ? "selected":""}>${i}</option>
 			</c:forEach>
 		</select>개씩 보기&nbsp;&nbsp;&nbsp;
-		<a href="javascript:fncSortingList('1')" id="orderLast" name="orderLast" >최근등록순</a>
+		</td>
+		<!-- <a href="javascript:fncSortingList('1')" id="orderLast" name="orderLast" >최근등록순</a>
 		<a href="javascript:fncSortingList('2')" id="orderHigh" name="orderHigh" >가격높은순</a>
-		<a href="javascript:fncSortingList('3')" id="orderLow" name="orderLow">가격낮은순</a>
+		<a href="javascript:fncSortingList('3')" id="orderLow" name="orderLow">가격낮은순</a> -->
+		<td style="width:70px;"><p style="cursor:pointer">최근등록순</p></td>
+		<td style="width:70px;"><p>가격높은순</p></td>
+		<td style="width:70px;"><p>가격낮은순</p></td>
+		<td>
 			<select id="searchCondition" name="searchCondition" class="ct_input_g" style="width:80px">
 				
 				<c:if test="${!empty search.searchCondition}">
@@ -159,7 +210,8 @@ $(function(){
 						<img src="/images/ct_btnbg01.gif" width="17" height="23">
 					</td>
 					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top:3px;">
-						<a href="javascript:fncFindProductList();">검색</a>
+						<!-- <a href="javascript:fncFindProductList();">검색</a> -->
+						검색
 					</td>
 					<td width="14" height="23">
 						<img src="/images/ct_btnbg03.gif" width="14" height="23">
@@ -169,7 +221,7 @@ $(function(){
 		</td>
 	</tr>
 </table>
-
+</div>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
@@ -193,21 +245,10 @@ $(function(){
 	<c:set var="i" value="0"/>
 	<c:forEach var="productBoard" items="${list}" >
 	<c:set var="i" value="${i+1}"/>
-	<tr class="ct_list_pop" id="prodTr">
-		<td align="center" id="prodTrTd" >${productBoard.boardNo}</td>
-		<td></td>
-				<%-- <td align="left">
-				<a href="/product/getProduct?boardNo=
-				${productBoard.boardNo}
-				&menu=
-				<c:if test="${param.menu=='search'}">
-				search
-				</c:if>
-				<c:if test="${param.menu=='manage'}">
-				manage
-				</c:if>">
-				${productBoard.title}</a></td> --%>
-				<td>${productBoard.title}</td>
+	<tr class="ct_list_pop" >
+		<td align="center" class="boardNo">${productBoard.boardNo}</td>
+		<td id="prodTitleTd"></td>
+				<td class="boardTitle">${productBoard.title}</td>
 		<td></td>
 		<td align="left">${productBoard.prodPrice}
 			<c:if test="${productBoard.boardNo == discount.discountBoard}">
@@ -235,7 +276,7 @@ $(function(){
 		<td align="center">
 		<input type="hidden" id="menu" name="menu" value="${param.menu}"/>
 		<input type="hidden" id="currentPage" name="currentPage" value="${search.currentPage}"/>
-			<jsp:include page="../common/pageNavigator.jsp"/>
+		<jsp:include page="../common/pageNavigator.jsp"/>
     	</td>
 	</tr>
 </table>
