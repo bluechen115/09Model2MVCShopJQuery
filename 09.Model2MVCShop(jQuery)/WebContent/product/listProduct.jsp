@@ -59,7 +59,6 @@ $(function(){
 });  */
 $(function(){
 	$('.boardTitle').on('click',function(){
-		//alert("Å¬¸¯µÊ");
 		var no = $(this).parent().children('.boardNo').text();
 		var href = "/product/getProduct?boardNo="+no;
 		if(${param.menu=='search'}){
