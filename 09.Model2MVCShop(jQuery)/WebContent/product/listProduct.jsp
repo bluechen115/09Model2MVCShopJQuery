@@ -44,19 +44,7 @@ $(function(){
 	});
 });
 
- /* $(function(){
-	$("td:contains('${productBoard.title}')").on('click',function(){
-		var href = "/product/getProduct?boardNo="+$("#prodTrTd").val().trim()
-		if(${param.menu=='search'}){
-			href = href + "&menu=search";
-		}
-		else if(${param.menu=='manage'}){
-			href = href + "&menu=manage";
-		}
-		self.location = href;
-		
-	});
-});  */
+
 $(function(){
 	$('.boardTitle').on('click',function(){
 		var no = $(this).parent().children('.boardNo').text();
@@ -97,9 +85,6 @@ $(function() {
 	});
 });
 
-/* $(function(){
-	$('.ct_list_pop:nth-child(4n+6)').css('background-color','whitesmoke');
-}); */
 
 
 
